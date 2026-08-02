@@ -9,10 +9,15 @@ on:
     timezone: "America/New_York"
   workflow_dispatch:
 
+concurrency:
+  group: sync-nano-mirror
+  cancel-in-progress: false   # never cancel a run mid-push
+
 jobs:
   mirror:
     name: Mirror GNU Nano upstream
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write      # Required to push to this repository
 
@@ -22,8 +27,24 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Mirror clone from GNU Savannah
-        run: git clone --mirror https://git.savannah.gnu.org/git/nano.git repo.git
+      - name: Cache bare mirror clone
+        uses: actions/cache@v6
+        with:
+          path: repo.git
+          key: nano-mirror-${{ github.run_id }}
+          restore-keys: |
+            nano-mirror-
+
+      - name: Clone or update mirror from GNU Savannah
+        run: |
+          if [ -d repo.git ]; then
+            echo "Using cached mirror, running incremental update..."
+            cd repo.git
+            git remote update --prune
+          else
+            echo "No cache found, doing full mirror clone..."
+            git clone --mirror https://git.savannah.gnu.org/git/nano.git repo.git
+          fi
 
       - name: Push branches and tags to GitHub
         env:
