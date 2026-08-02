@@ -9,16 +9,16 @@ on:
       dry_run:
         description: 'Only log actions, do not delete anything.'
         type: boolean
-        default: true
+        default: false
         required: false
       days:
         description: 'Retain runs newer than this many days.'
         required: true
-        default: '30'
+        default: '0'
       minimum_runs:
         description: 'Minimum runs to keep per workflow.'
         required: true
-        default: '2'
+        default: '0'
       delete_workflow_pattern:
         description: 'Workflow name/filename to target (leave blank for all).'
         required: false
