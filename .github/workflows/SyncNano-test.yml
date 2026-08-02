@@ -1,0 +1,27 @@
+# Syncs this repo with the GNU Nano upstream repository.
+# Uses a bare git mirror clone + push --mirror to keep all branches and tags in sync.
+
+name: SyncNano-test
+
+on:
+  schedule:
+  - cron: '*/5 * * * *'
+    timezone: "America/New_York"
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    name: Mirror GNU Nano upstream
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # Required to push to this repository
+
+    steps:
+      - name: Mirror clone from GNU Savannah
+        run: |
+          git clone --mirror https://git.savannah.gnu.org/git/nano.git repo.git
+
+      - name: Push mirror to GitHub
+        run: |
+          cd repo.git
+          git push --mirror "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
