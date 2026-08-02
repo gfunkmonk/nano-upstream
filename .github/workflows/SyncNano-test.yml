@@ -18,10 +18,32 @@ jobs:
 
     steps:
       - name: Mirror clone from GNU Savannah
-        run: |
-          git clone --mirror https://git.savannah.gnu.org/git/nano.git repo.git
+      - name: Mirror clone from GNU Savannah
+        run: git clone --mirror https://git.savannah.gnu.org/git/nano.git repo.git
 
-      - name: Push mirror to GitHub
+      - name: Push branches and tags to GitHub
+        env:
+          GH_REMOTE: "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
         run: |
           cd repo.git
-          git push --mirror "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+
+          # Push all branches (prune any that no longer exist upstream, but GitHub
+          # will reject deletion of the default branch — that's fine, we ignore it).
+          git push "$GH_REMOTE" \
+            '+refs/heads/*:refs/heads/*' \
+            --prune \
+            || true
+
+          # Push all tags (always force-update).
+          git push "$GH_REMOTE" \
+            '+refs/tags/*:refs/tags/*' \
+            --prune
+
+      - name: Verify push succeeded (at least one ref updated)
+        env:
+          GH_REMOTE: "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+        run: |
+          cd repo.git
+          # List remote refs to confirm connectivity and that master is present.
+          git ls-remote "$GH_REMOTE" refs/heads/master
+
