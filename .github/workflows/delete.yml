@@ -1,8 +1,9 @@
-name: Delete old workflow runs
+name: Workflow runs delete
 
 on:
   schedule:
-    - cron: '0 2 * * *'   # 02:00 UTC daily
+    - cron: '0 6 * * *'   # 06:00 EST/EDT daily
+      timezone: 'America/New_York'
   workflow_dispatch:
     inputs:
       dry_run:
