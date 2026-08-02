@@ -4,9 +4,9 @@
 name: SyncNano
 
 on:
-  schedule:
-  - cron: '*/5 * * * *'
-    timezone: "America/New_York"
+  #schedule:
+  #- cron: '*/5 * * * *'
+  #  timezone: "America/New_York"
   workflow_dispatch:
 
 concurrency:
