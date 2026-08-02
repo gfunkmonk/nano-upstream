@@ -1,7 +1,7 @@
 # Syncs this repo with the GNU Nano upstream repository.
 # Uses a bare git mirror clone + push --mirror to keep all branches and tags in sync.
 
-name: SyncNano
+name: SyncNano-Alt
 
 on:
   schedule:
@@ -31,9 +31,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: repo.git
-          key: nano-mirror-${{ github.run_id }}
+          key: nano-mirror-alt-${{ github.run_id }}
           restore-keys: |
-            nano-mirror-
+            nano-mirror-alt-
 
       - name: Clone or update mirror from GNU Savannah
         run: |
@@ -43,7 +43,7 @@ jobs:
             git remote update --prune
           else
             echo "No cache found, doing full mirror clone..."
-            git clone --mirror https://git.savannah.gnu.org/git/nano.git repo.git
+            git clone --mirror https://github.com/ahjragaas/nano.git repo.git
           fi
 
       - name: Push branches and tags to GitHub
