@@ -18,7 +18,6 @@ jobs:
 
     steps:
       - name: Mirror clone from GNU Savannah
-      - name: Mirror clone from GNU Savannah
         run: git clone --mirror https://git.savannah.gnu.org/git/nano.git repo.git
 
       - name: Push branches and tags to GitHub
