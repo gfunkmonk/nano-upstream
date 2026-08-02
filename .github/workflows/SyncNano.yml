@@ -8,6 +8,15 @@ on:
   - cron: '*/5 * * * *'
     timezone: "America/New_York"
   workflow_dispatch:
+    inputs:
+      uprepo:
+        description: Upstream Repo
+        required: false
+        default: git.savannah.gnu.org/git
+        type: choice
+        options:
+          - git.savannah.gnu.org/git
+          - github.com/ahjragaas
 
 concurrency:
   group: sync-nano-mirror
@@ -43,7 +52,7 @@ jobs:
             git remote update --prune
           else
             echo "No cache found, doing full mirror clone..."
-            git clone --mirror https://git.savannah.gnu.org/git/nano.git repo.git
+            git clone --mirror https://${{ github.event.inputs.uprepo }}/nano.git repo.git
           fi
 
       - name: Push branches and tags to GitHub
