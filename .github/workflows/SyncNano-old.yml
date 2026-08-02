@@ -1,0 +1,28 @@
+#  Syncs this repo with the GNU Nano editor repo.
+
+name: SyncNano-old
+
+on:
+  schedule:
+  - cron: '*/5 * * * *'
+    timezone: "America/New_York"  
+  workflow_dispatch:
+
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v7
+      with:
+        persist-credentials: false
+
+    - name: GitHub Repo Sync
+      uses: repo-sync/github-sync@v2.3.0
+      with:
+        source_repo: "https://git.savannah.gnu.org/git/nano.git"
+        source_branch: "*"
+        destination_branch: "*"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        sync_tags: "true"
+
