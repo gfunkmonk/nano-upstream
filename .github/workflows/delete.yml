@@ -1,9 +1,9 @@
 name: Workflow runs delete
 
 on:
-  schedule:
-    - cron: '0 6 * * *'   # 06:00 EST/EDT daily
-      timezone: 'America/New_York'
+  #schedule:
+  #  - cron: '0 6 * * *'   # 06:00 EST/EDT daily
+  #    timezone: 'America/New_York'
   workflow_dispatch:
     inputs:
       dry_run:
