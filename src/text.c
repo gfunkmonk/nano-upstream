@@ -2839,6 +2839,7 @@ void do_linter(void)
 					break;
 				} else if (choice == YES) {
 					open_buffer(curlint->filename, TRUE);
+					prepare_for_display();
 				} else {
 #endif
 					char *unwantedfile = copy_of(curlint->filename);
