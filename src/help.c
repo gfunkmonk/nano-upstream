@@ -87,9 +87,9 @@ void help_init(void)
 				"location.\n\n If you have compiled nano with multiple "
 				"file buffer support, and enable multiple file buffers "
 				"with the -F or --multibuffer command line flags, the "
-				"Meta-F toggle, or a nanorc file, inserting a file "
+				"M-F toggle, or a nanorc file, inserting a file "
 				"will cause it to be loaded into a separate buffer "
-				"(use Meta-< and > to switch between file buffers).  ");
+				"(use M-, and M-. to switch between file buffers).  ");
 		htx[1] = N_("If you need another blank buffer, do not enter "
 				"any filename, or type in a nonexistent filename at "
 				"the prompt and press Enter.\n\n The following "
